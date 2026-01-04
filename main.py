@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
 API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -18,8 +19,8 @@ def make_parser():
     return parser
 
 
-def get_response(query):
-    response = CLIENT.models.generate_content(model=MODEL, contents=query)
+def get_response(messages):
+    response = CLIENT.models.generate_content(model=MODEL, contents=messages)
     if response.usage_metadata is None:
         raise RuntimeError("API query failure")
 
@@ -41,8 +42,11 @@ def print_verbose_response(
 def main():
     parser = make_parser()
     args = parser.parse_args()
+    # A list of messages, which take the form of a `types.Content` instance, containing a role, and in our case, a series of
+    # text parts
     query = args.user_prompt
-    print_verbose_response(query, *get_response(query))
+    messages = [types.Content(role="user", parts=[types.Part(text=query)])]
+    print_verbose_response(query, *get_response(messages))
 
 
 if __name__ == "__main__":
