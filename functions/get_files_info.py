@@ -20,7 +20,9 @@ def get_files_info(working_directory, directory="."):
             fp = os.path.join(cd_path, file)
             dir_status = os.path.isdir(fp)
             file_size = os.path.getsize(fp)
-            dir_cont.append(f"- {file}: file_size={file_size}, is_dir={dir_status}")
+            dir_cont.append(
+                f"- {file}: file_size={file_size} bytes, is_dir={dir_status}"
+            )
         return str.join("\n", dir_cont)
     except Exception as e:
         return f"Error: {e}"
