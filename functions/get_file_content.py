@@ -20,5 +20,6 @@ def get_file_content(working_directory, file_path):
             # If file returns true - not empty. Signify truncation
             if f.read(1):
                 file_content_string += f'[...File "{file_path}" truncated at {config.MAX_CHARS} characters]'
+            return file_content_string
     except Exception as e:
         return f"Error: {e}"
